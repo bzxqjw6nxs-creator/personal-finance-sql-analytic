@@ -141,3 +141,19 @@ GROUP BY ROLLUP(cat);
  GROUP BY WEEKDAY(created), cat
  ORDER BY 4;
 
+WITH years AS(
+SELECT cat, 
+SUM(CASE WHEN created BETWEEN '2023-01-01' AND '2023-05-31' THEN price ELSE 0 END) AS month5_2023,
+SUM(CASE WHEN created BETWEEN '2024-01-01' AND '2024-05-31' THEN price ELSE 0 END) AS month5_2024,
+SUM(CASE WHEN created BETWEEN '2025-01-01' AND '2025-05-31' THEN price ELSE 0 END) AS month5_2025,
+SUM(CASE WHEN created BETWEEN '2026-01-01' AND '2026-05-31' THEN price ELSE 0 END) AS month5_2026
+FROM master_clean_expenses
+WHERE user_id = 2
+GROUP BY cat)
+SELECT cat, month5_2023, month5_2024,
+month5_2025, month5_2026,
+ROUND((month5_2024 - month5_2023) * 100 / NULLIF(month5_2023, 0), 2) AS grow_rate_24,
+ROUND((month5_2025 - month5_2024) * 100 / NULLIF(month5_2024, 0), 2) AS grow_rate_25,
+ROUND((month5_2026 - month5_2025) * 100 / NULLIF(month5_2025, 0), 2) AS grow_rate_26
+FROM years;
+
