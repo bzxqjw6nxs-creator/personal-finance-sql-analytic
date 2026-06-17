@@ -1,6 +1,8 @@
 ## Tools
 * **Python (Pandas)** — Data cleaning and preprocessing.
 * **SQL** — Data analysis and aggregation.
+* **VS Code**
+* **DBeaver**
 
 ##  How I analyzed the data (Step-by-Step)
 
